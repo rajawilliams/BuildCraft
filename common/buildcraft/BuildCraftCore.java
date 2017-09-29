@@ -125,7 +125,7 @@ import buildcraft.core.utils.WorldPropertyIsWood;
 import buildcraft.energy.fuels.CoolantManager;
 import buildcraft.energy.fuels.FuelManager;
 
-@Mod(name = "BuildCraft", version = Version.VERSION, useMetadata = false, modid = "BuildCraftCore", acceptedMinecraftVersions = "[1.8]", dependencies = "required-after:Forge@[10.13.0.1207,)")
+@Mod(name = "BuildCraft", version = Version.VERSION, useMetadata = false, modid = "BuildCraftCore", acceptedMinecraftVersions = "[1.9.4, 1.10.2]")
 public class BuildCraftCore extends BuildCraftMod {
 
 	@Mod.Instance("BuildCraftCore")
