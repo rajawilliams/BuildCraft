@@ -33,7 +33,7 @@ import buildcraft.core.utils.Utils;
 public class BlockArchitect extends BlockBuildCraft {
 
 	public BlockArchitect() {
-		super(Material.iron, new PropertyEnum[]{FACING_PROP});
+		super(Material.IRON, new PropertyEnum[]{FACING_PROP});
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import java.util.Random;
 
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import buildcraft.api.core.SheetIcon;
@@ -175,8 +175,9 @@ public enum EnumColor implements IStringSerializable {
 		return NAMES[ordinal()];
 	}
 
+	@SuppressWarnings("deprecation")
 	public String getLocalizedName() {
-		return StatCollector.translateToLocal(getTag());
+		return I18n.translateToLocal(getTag());
 	}
 
 	public String getDye() {

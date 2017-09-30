@@ -12,9 +12,10 @@ import java.util.Collection;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 
+// Beep boop. I am teh registree! :D
 public interface IRobotRegistry {
 
 	long getNextRobotId();

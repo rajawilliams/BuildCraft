@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public final class BuildCraftAPI {

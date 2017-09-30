@@ -31,7 +31,7 @@ public class WorldBlockIndex implements Comparable<WorldBlockIndex> {
 	 */
 	public WorldBlockIndex(World world, int x, int y, int z) {
 
-		dimension = world.provider.getDimensionId();
+		dimension = world.provider.getDimension();
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -45,7 +45,7 @@ public class WorldBlockIndex implements Comparable<WorldBlockIndex> {
 	}
 
 	public WorldBlockIndex(Entity entity) {
-		dimension = entity.worldObj.provider.getDimensionId();
+		dimension = entity.worldObj.provider.getDimension();
 		x = (int) Math.floor(entity.posX);
 		y = (int) Math.floor(entity.posY);
 		z = (int) Math.floor(entity.posZ);

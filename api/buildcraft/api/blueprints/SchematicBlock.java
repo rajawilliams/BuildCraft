@@ -20,7 +20,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.BlockFluidBase;
@@ -95,6 +95,7 @@ public class SchematicBlock extends SchematicBlockBase {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public BuildingStage getBuildStage () {
 		Block block = state.getBlock();
@@ -102,7 +103,7 @@ public class SchematicBlock extends SchematicBlockBase {
 			return BuildingStage.SUPPORTED;
 		} else if (block instanceof BlockFluidBase || block instanceof BlockLiquid) {
 			return BuildingStage.EXPANDING;
-		} else if (block.isOpaqueCube()) {
+		} else if (block.isOpaqueCube(state)) {
 			return BuildingStage.STANDALONE;
 		} else {
 			return BuildingStage.SUPPORTED;

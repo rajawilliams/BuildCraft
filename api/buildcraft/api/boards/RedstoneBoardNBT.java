@@ -11,7 +11,7 @@ package buildcraft.api.boards;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation; // WUT THE HELL!!! MOJANG DOES THIS ALL THE TIME OR WAT.
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

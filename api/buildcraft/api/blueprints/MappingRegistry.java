@@ -244,7 +244,7 @@ public class MappingRegistry {
 		for (Block b : idToBlock) {
 			NBTTagCompound sub = new NBTTagCompound();
 			sub.setString("name",
-					((ResourceLocation) Block.blockRegistry.getNameForObject(b)).getResourcePath());
+					((ResourceLocation) Block.REGISTRY.getNameForObject(b)).getResourcePath());
 			blocksMapping.appendTag(sub);
 		}
 
@@ -255,7 +255,7 @@ public class MappingRegistry {
 		for (Item i : idToItem) {
 			NBTTagCompound sub = new NBTTagCompound();
 			sub.setString("name",
-					((ResourceLocation) Item.itemRegistry.getNameForObject(i)).getResourcePath());
+					((ResourceLocation) Item.REGISTRY.getNameForObject(i)).getResourcePath());
 			itemsMapping.appendTag(sub);
 		}
 
@@ -278,11 +278,11 @@ public class MappingRegistry {
 
 		for (int i = 0; i < blocksMapping.tagCount(); ++i) {
 			NBTTagCompound sub = blocksMapping.getCompoundTagAt(i);
-			String name = sub.getString("name");
+			ResourceLocation name = new ResourceLocation(sub.getString("name"));
 			Block b = null;
 			
-			if (Block.blockRegistry.containsKey(name)) {
-				b = (Block) Block.blockRegistry.getObject(name);
+			if (Block.REGISTRY.containsKey(name)) {
+				b = (Block) Block.REGISTRY.getObject(name);
 			}
 			
 			if (b != null) {
@@ -299,11 +299,11 @@ public class MappingRegistry {
 
 		for (int i = 0; i < itemsMapping.tagCount(); ++i) {
 			NBTTagCompound sub = itemsMapping.getCompoundTagAt(i);
-			String name = sub.getString("name");
+			ResourceLocation name = new ResourceLocation(sub.getString("name"));
 			Item item = null;
 			
-			if (Item.itemRegistry.containsKey(name)) {
-				item = (Item) Item.itemRegistry.getObject(name);
+			if (Item.REGISTRY.containsKey(name)) {
+				item = (Item) Item.REGISTRY.getObject(name);
 			}
 			
 			if (item != null) {

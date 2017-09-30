@@ -1,0 +1,16 @@
+/ArrayFluidFilter.class
+/ArrayStackFilter.class
+/ArrayStackOrListFilter.class
+/CompositeFilter.class
+/CraftingFilter.class
+/IFluidFilter.class
+/IStackFilter.class
+/InvertedStackFilter.class
+/OreStackFilter.class
+/PassThroughFluidFilter.class
+/PassThroughStackFilter.class
+/SimpleFluidFilter.class
+/StackFilter$1.class
+/StackFilter$2.class
+/StackFilter.class
+/StatementParameterStackFilter.class

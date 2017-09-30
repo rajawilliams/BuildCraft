@@ -281,7 +281,7 @@ public class BuildCraftBuilders extends BuildCraftMod {
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent evt) {
-		// Register gui handler
+		// Register GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 		// Register save handler
@@ -289,6 +289,8 @@ public class BuildCraftBuilders extends BuildCraftMod {
 
 		// Standard blocks
 		ISchematicRegistry schemes = BuilderAPI.schematicRegistry;
+		
+		// TODO Fix capitalization errors
 		schemes.registerSchematicBlock(Blocks.air, SchematicAir.class);
 
 		schemes.registerSchematicBlock(Blocks.snow, SchematicIgnore.class);

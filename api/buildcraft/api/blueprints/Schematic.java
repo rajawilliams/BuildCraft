@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import buildcraft.api.core.IInvSlot;
 
 /**

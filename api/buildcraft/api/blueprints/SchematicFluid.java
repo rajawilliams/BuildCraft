@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 public class SchematicFluid extends SchematicBlock {

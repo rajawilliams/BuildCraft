@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * This class is used whenever stacks needs to be stored as keys.
  */
+@SuppressWarnings("deprecation")
 public final class StackKey {
 	public final ItemStack stack;
 	public final FluidStack fluidStack;
@@ -87,7 +88,7 @@ public final class StackKey {
 			}
 		}
 		if (fluidStack != null) {
-			if (fluidStack.fluidID != k.fluidStack.fluidID ||
+			if (!fluidStack.isFluidEqual(k.fluidStack) ||
 					fluidStack.amount != k.fluidStack.amount ||
 					!objectsEqual(fluidStack.tag, k.fluidStack.tag)) {
 				return false;
@@ -106,7 +107,7 @@ public final class StackKey {
 		}
 		result = 31 * result + 7;
 		if (fluidStack != null) {
-			result = 31 * result + fluidStack.fluidID;
+			result = 31 * result + fluidStack.hashCode(); // I don't have anything else to do ¯\_(ツ)_/¯
 			result = 31 * result + fluidStack.amount;
 			result = 31 * result + objectHashCode(fluidStack.tag);
 		}

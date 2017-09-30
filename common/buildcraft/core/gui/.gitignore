@@ -1,0 +1,15 @@
+/AdvancedSlot.class
+/BuildCraftContainer.class
+/ContainerList.class
+/FluidSlot.class
+/GuiAdvancedInterface.class
+/GuiBuildCraft$Ledger.class
+/GuiBuildCraft$LedgerManager.class
+/GuiBuildCraft.class
+/GuiList$Button.class
+/GuiList$MainSlot.class
+/GuiList$SecondarySlot.class
+/GuiList.class
+/GuiTools.class
+/IInventorySlot.class
+/ItemSlot.class

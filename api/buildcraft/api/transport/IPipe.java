@@ -8,7 +8,7 @@
  */
 package buildcraft.api.transport;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import buildcraft.api.gates.IGate;
 

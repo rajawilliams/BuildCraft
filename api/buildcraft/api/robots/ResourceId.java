@@ -10,7 +10,7 @@ package buildcraft.api.robots;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 
 public abstract class ResourceId {
@@ -62,7 +62,7 @@ public abstract class ResourceId {
 
 	public static ResourceId load(NBTTagCompound nbt) {
 		try {
-			Class clas = Class.forName(nbt.getString("class"));
+			Class clas = Class.forName(nbt.getString("class")); // "clas" or "_class"
 
 			ResourceId id = (ResourceId) clas.newInstance();
 			id.readFromNBT(nbt);

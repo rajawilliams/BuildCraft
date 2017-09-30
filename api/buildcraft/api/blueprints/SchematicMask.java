@@ -12,8 +12,9 @@ import java.util.LinkedList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos; // Util to util.math broke 1.8.9 to 1.10.2 & 1.9.4 porting
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.WorldServer;
 import buildcraft.api.core.BuildCraftAPI;
 
@@ -43,7 +44,7 @@ public class SchematicMask extends SchematicBlockBase {
 
 				stack.onItemUse(
 						BuildCraftAPI.proxy.getBuildCraftPlayer((WorldServer) context.world()).get(),
-						context.world(), pos, EnumFacing.UP, 0.0f, 0.0f, 0.0f);
+						context.world(), pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f); // Really Mojang.
 			}
 		} else {
 			context.world().setBlockToAir(pos);

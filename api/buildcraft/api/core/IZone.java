@@ -9,7 +9,7 @@
 package buildcraft.api.core;
 
 import java.util.Random;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos; // I blame jeb_
 
 public interface IZone {
 
