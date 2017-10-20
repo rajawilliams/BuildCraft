@@ -33,8 +33,8 @@ import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -578,7 +578,7 @@ public final class Utils {
 	}
 
 	public static String getBlockName(Block block) {
-		ResourceLocation location = ((ResourceLocation) Block.blockRegistry.getNameForObject(block));
+		ResourceLocation location = ((ResourceLocation) Block.REGISTRY.getNameForObject(block));
 		if (location == null) {
 			return null;
 		}
@@ -586,7 +586,7 @@ public final class Utils {
 	}
 
 	public static String getItemName(Item item) {
-		ResourceLocation location = ((ResourceLocation) Item.itemRegistry.getNameForObject(item));
+		ResourceLocation location = ((ResourceLocation) Item.REGISTRY.getNameForObject(item));
 		if (location == null) {
 			return null;
 		}
@@ -611,7 +611,7 @@ public final class Utils {
             {
                 for (int var8 = minZ; var8 <= maxZ; ++var8)
                 {
-                    if (!world.getChunkProvider().chunkExists(var7, var8))
+                    if (world.getChunkProvider().getLoadedChunk(var7, var8) != null) // TODO IChunkProvider#getLoadedChunk is Nullable, better check.
                     {
                         return false;
                     }

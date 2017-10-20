@@ -13,11 +13,10 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,9 +26,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
@@ -55,7 +51,6 @@ import buildcraft.factory.BlockQuarry;
 import buildcraft.factory.BlockRefinery;
 import buildcraft.factory.BlockTank;
 import buildcraft.factory.FactoryProxy;
-import buildcraft.factory.FactoryProxyClient;
 import buildcraft.factory.GuiHandler;
 import buildcraft.factory.PumpDimensionList;
 import buildcraft.factory.TileAutoWorkbench;
@@ -179,10 +174,10 @@ public class BuildCraftFactory extends BuildCraftMod {
 		quarryLoadsChunks = genCat.get("quarry.loads.chunks", true, "Quarry loads chunks required for mining");
 
 		Property pumpList = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "pumping.controlList", DefaultProps.PUMP_DIMENSION_LIST);
-		pumpList.comment = "Allows admins to whitelist or blacklist pumping of specific fluids in specific dimensions.\n"
+		pumpList.setComment("Allows admins to whitelist or blacklist pumping of specific fluids in specific dimensions.\n"
 				+ "Eg. \"-/-1/Lava\" will disable lava in the nether. \"-/*/Lava\" will disable lava in any dimension. \"+/0/*\" will enable any fluid in the overworld.\n"
 				+ "Entries are comma seperated, banned fluids have precedence over allowed ones."
-				+ "Default is \"+/*/*,+/-1/Lava\" - the second redundant entry (\"+/-1/lava\") is there to show the format.";
+				+ "Default is \"+/*/*,+/-1/Lava\" - the second redundant entry (\"+/-1/lava\") is there to show the format.");
 		pumpDimensionList = new PumpDimensionList(pumpList.getString());
 
 		if (BuildCraftCore.mainConfiguration.hasChanged()) {
@@ -226,6 +221,8 @@ public class BuildCraftFactory extends BuildCraftMod {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
+	// TODO Redo recipes for 1.9 & up
+	
 	public static void loadRecipes() {
 		if (allowMining) {
 			if (miningWellBlock != null) {
@@ -236,7 +233,7 @@ public class BuildCraftFactory extends BuildCraftMod {
 						'p', "dustRedstone",
 						'i', "ingotIron",
 						'g', "gearIron",
-						'P', Items.iron_pickaxe);
+						'P', Items.IRON_PICKAXE);
 			}
 
 			if (quarryBlock != null) {
@@ -249,7 +246,7 @@ public class BuildCraftFactory extends BuildCraftMod {
 						'p', "dustRedstone",
 						'g', "gearGold",
 						'd', "gearDiamond",
-						'D', Items.diamond_pickaxe);
+						'D', Items.DIAMOND_PICKAXE);
 			}
 
 			if (pumpBlock != null && miningWellBlock != null) {
@@ -276,11 +273,11 @@ public class BuildCraftFactory extends BuildCraftMod {
 		}
 
 		if (autoWorkbenchBlock != null) {
-			CoreProxy.proxy.addCraftingRecipe(new ItemStack(autoWorkbenchBlock),
+			CoreProxy.proxy.addCraftingRecipe(new ItemStack(autoWorkbenchBlock), // This is the reason I am porting this beaut.
 					" g ",
 					"gwg",
 					" g ",
-					'w', Blocks.crafting_table,
+					'w', Blocks.CRAFTING_TABLE,
 					'g', "gearWood");
 		}
 
@@ -299,7 +296,7 @@ public class BuildCraftFactory extends BuildCraftMod {
 					"TGT",
 					'T', tankBlock != null ? tankBlock : "blockGlass",
 					'G', "gearDiamond",
-					'R', Blocks.redstone_torch);
+					'R', Blocks.REDSTONE_TORCH);
 		}
 
 		if (hopperBlock != null) {
@@ -308,7 +305,7 @@ public class BuildCraftFactory extends BuildCraftMod {
 					"IGI",
 					" I ",
 					'I', "ingotIron",
-					'C', Blocks.chest,
+					'C', Blocks.CHEST,
 					'G', "gearStone");
 		}
 
@@ -320,7 +317,7 @@ public class BuildCraftFactory extends BuildCraftMod {
 					'I', "ingotIron",
 					'T', tankBlock != null ? tankBlock : "blockGlass",
 					'G', "gearIron",
-					'F', new ItemStack(Blocks.iron_bars));
+					'F', new ItemStack(Blocks.IRON_BARS));
 		}
 	}
 

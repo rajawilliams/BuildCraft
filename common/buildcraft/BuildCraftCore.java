@@ -13,7 +13,6 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashSet;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
@@ -47,7 +46,6 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
@@ -61,7 +59,6 @@ import buildcraft.api.core.BCLog;
 import buildcraft.api.core.BuildCraftAPI;
 import buildcraft.api.core.IWorldProperty;
 import buildcraft.api.core.JavaTools;
-import buildcraft.api.enums.EnumColor;
 import buildcraft.api.enums.EnumSpring;
 import buildcraft.api.fuels.BuildcraftFuelRegistry;
 import buildcraft.api.recipes.BuildcraftRecipeRegistry;
@@ -91,7 +88,6 @@ import buildcraft.core.blueprints.SchematicRegistry;
 import buildcraft.core.network.BuildCraftChannelHandler;
 import buildcraft.core.network.EntityIds;
 import buildcraft.core.network.PacketHandler;
-import buildcraft.core.network.PacketUpdate;
 import buildcraft.core.proxy.CoreProxy;
 import buildcraft.core.recipes.AssemblyRecipeManager;
 import buildcraft.core.recipes.IntegrationRecipeManager;
@@ -125,6 +121,7 @@ import buildcraft.core.utils.WorldPropertyIsWood;
 import buildcraft.energy.fuels.CoolantManager;
 import buildcraft.energy.fuels.FuelManager;
 
+@SuppressWarnings("deprecation")
 @Mod(name = "BuildCraft", version = Version.VERSION, useMetadata = false, modid = "BuildCraftCore", acceptedMinecraftVersions = "[1.9.4, 1.10.2]")
 public class BuildCraftCore extends BuildCraftMod {
 
@@ -250,28 +247,28 @@ public class BuildCraftCore extends BuildCraftMod {
 			mainConfiguration.load();
 
 			Property updateCheck = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "update.check", true);
-			updateCheck.comment = "set to true for version check on startup";
+			updateCheck.setComment("set to true for version check on startup");
 			if (updateCheck.getBoolean(true)) {
 				Version.check();
 			}
 
 			Property dropBlock = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "dropBrokenBlocks", true);
-			dropBlock.comment = "set to false to prevent fillers from dropping blocks.";
+			dropBlock.setComment("set to false to prevent fillers from dropping blocks.");
 			dropBrokenBlocks = dropBlock.getBoolean(true);
 
 			Property lifespan = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "itemLifespan", itemLifespan);
-			lifespan.comment = "the lifespan in ticks of items dropped on the ground by pipes and machines, vanilla = 6000, default = 1200";
+			lifespan.setComment("the lifespan in ticks of items dropped on the ground by pipes and machines, vanilla = 6000, default = 1200");
 			itemLifespan = lifespan.getInt(itemLifespan);
 			if (itemLifespan < 100) {
 				itemLifespan = 100;
 			}
 
 			Property factor = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "network.updateFactor", 10);
-			factor.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
+			factor.setComment("increasing this number will decrease network update frequency, useful for overloaded servers");
 			updateFactor = factor.getInt(10);
 
 			Property longFactor = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "network.stateRefreshPeriod", 40);
-			longFactor.comment = "delay between full client sync packets, increasing it saves bandwidth, decreasing makes for better client syncronization.";
+			longFactor.setComment("delay between full client sync packets, increasing it saves bandwidth, decreasing makes for better client syncronization.");
 			longUpdateFactor = longFactor.getInt(40);
 
 			wrenchItem = (new ItemWrench()).setUnlocalizedName("wrenchItem");
@@ -284,7 +281,7 @@ public class BuildCraftCore extends BuildCraftMod {
 			CoreProxy.proxy.registerItem(listItem);
 
 			Property modifyWorldProp = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "modifyWorld", true);
-			modifyWorldProp.comment = "set to false if BuildCraft should not generate custom blocks (e.g. oil)";
+			modifyWorldProp.setComment("set to false if BuildCraft should not generate custom blocks (e.g. oil)");
 			modifyWorld = modifyWorldProp.getBoolean(true);
 
 			if (BuildCraftCore.modifyWorld) {
@@ -295,7 +292,7 @@ public class BuildCraftCore extends BuildCraftMod {
 
 			Property consumeWater = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "consumeWater", consumeWaterSources);
 			consumeWaterSources = consumeWater.getBoolean(consumeWaterSources);
-			consumeWater.comment = "set to true if the Pump should consume water";
+			consumeWater.setComment("set to true if the Pump should consume water");
 
 			woodenGearItem = (new ItemGear()).setUnlocalizedName("woodenGearItem");
 			CoreProxy.proxy.registerItem(woodenGearItem);
@@ -361,8 +358,8 @@ public class BuildCraftCore extends BuildCraftMod {
 			loadRecipes();
 		}
 		EntityRegistry.registerModEntity(EntityRobot.class, "bcRobot", EntityIds.ROBOT, instance, 50, 1, true);
-		EntityList.stringToClassMapping.remove("BuildCraftCore.bcLaser");
-		EntityList.stringToClassMapping.remove("BuildCraftCore.bcEnergyLaser");
+		EntityList.ENTITY_EGGS.remove("BuildCraftCore.bcLaser");
+		EntityList.ENTITY_EGGS.remove("BuildCraftCore.bcEnergyLaser");
 
 		FMLCommonHandler.instance().bus().register(new CraftingHandler());
 
@@ -374,7 +371,7 @@ public class BuildCraftCore extends BuildCraftMod {
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		for (Object o : Block.blockRegistry) {
+		for (Object o : Block.REGISTRY) {
 			Block block = (Block) o;
 
 			if (block instanceof BlockFluidBase || block instanceof BlockLiquid || block instanceof IPlantable) {
@@ -382,10 +379,10 @@ public class BuildCraftCore extends BuildCraftMod {
 			}
 		}
 
-		BuildCraftAPI.softBlocks.add(Blocks.snow);
-		BuildCraftAPI.softBlocks.add(Blocks.vine);
-		BuildCraftAPI.softBlocks.add(Blocks.fire);
-		BuildCraftAPI.softBlocks.add(Blocks.air);
+		BuildCraftAPI.softBlocks.add(Blocks.SNOW);
+		BuildCraftAPI.softBlocks.add(Blocks.VINE);
+		BuildCraftAPI.softBlocks.add(Blocks.FIRE);
+		BuildCraftAPI.softBlocks.add(Blocks.AIR);
 
 		FMLCommonHandler.instance().bus().register(new TickHandlerCore());
 
@@ -444,8 +441,8 @@ public class BuildCraftCore extends BuildCraftMod {
 				"ingotGold", 'G', "gearIron");
 		CoreProxy.proxy.addCraftingRecipe(
 				new ItemStack(diamondGearItem), " I ", "IGI", " I ", 'I', "gemDiamond", 'G', "gearGold");
-		CoreProxy.proxy.addCraftingRecipe(new ItemStack(mapLocationItem), "ppp", "pYp", "ppp", 'p', Items.paper, 'Y', "dyeYellow");
-		CoreProxy.proxy.addCraftingRecipe(new ItemStack(listItem), "ppp", "pYp", "ppp", 'p', Items.paper, 'Y',
+		CoreProxy.proxy.addCraftingRecipe(new ItemStack(mapLocationItem), "ppp", "pYp", "ppp", 'p', Items.PAPER, 'Y', "dyeYellow");
+		CoreProxy.proxy.addCraftingRecipe(new ItemStack(listItem), "ppp", "pYp", "ppp", 'p', Items.PAPER, 'Y',
 				"dyeGreen");
 	}
 
@@ -454,6 +451,7 @@ public class BuildCraftCore extends BuildCraftMod {
 		InterModComms.processIMC(event);
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderLast (RenderWorldLastEvent evt) {
@@ -493,12 +491,12 @@ public class BuildCraftCore extends BuildCraftMod {
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projectionF);
 		GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
 		float f = (viewport.get(0) + viewport.get(2)) / 2;
-		float f1 = (viewport.get(1) + viewport.get(3)) / 2;
+		float f1 = (viewport.get(1) + viewport.get(3)) / 2; // TODO These are unused :( They feel lonely, too.
 
 		float x = Mouse.getX();
 		float y = Mouse.getY();
 
-		// TODO: Minecraft seems to instist to have this winZ re-created at
+		// TODO: Minecraft seems to insist to have this winZ re-created at
 		// each frame - looks like a memory leak to me but I couldn't use a
 		// static variable instead, as for the rest.
 		FloatBuffer winZ = GLAllocation.createDirectFloatBuffer(1);

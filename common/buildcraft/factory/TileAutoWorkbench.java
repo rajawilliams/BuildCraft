@@ -92,11 +92,6 @@ public class TileAutoWorkbench extends TileBuildCraft implements ISidedInventory
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
-		return inv.getStackInSlotOnClosing(slot);
-	}
-
-	@Override
 	public String getName() {
 		return "";
 	}
@@ -128,10 +123,11 @@ public class TileAutoWorkbench extends TileBuildCraft implements ISidedInventory
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound data) {
+	public NBTTagCompound writeToNBT(NBTTagCompound data) {
 		super.writeToNBT(data);
 		resultInv.writeToNBT(data);
 		InvUtils.writeInvToNBT(craftMatrix, "matrix", data);
+		return data;
 	}
 
 	public ItemStack findRecipeOutput() {
@@ -321,5 +317,10 @@ public class TileAutoWorkbench extends TileBuildCraft implements ISidedInventory
 	@Override
 	public boolean hasCustomName() {
 		return false;
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
+		return inv.getStackInSlot(index);
 	}
 }

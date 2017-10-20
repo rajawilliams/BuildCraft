@@ -17,22 +17,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import cofh.api.energy.IEnergyHandler;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.core.ISerializable;
 import buildcraft.core.network.BuildCraftPacket;
 import buildcraft.core.network.ISynchronizedTile;
 import buildcraft.core.network.PacketTileUpdate;
-import buildcraft.core.utils.Utils;
 
-public abstract class TileBuildCraft extends TileEntity implements IEnergyHandler, ISynchronizedTile, ISerializable, IUpdatePlayerListBox {
+public abstract class TileBuildCraft extends TileEntity implements IEnergyHandler, ISynchronizedTile, ISerializable, ITickable {
     protected TileBuffer[] cache;
 	protected HashSet<EntityPlayer> guiWatchers = new HashSet<EntityPlayer>();
 
@@ -111,19 +108,16 @@ public abstract class TileBuildCraft extends TileEntity implements IEnergyHandle
 	}
 
 	@Override
-	public Packet getDescriptionPacket() {
-		return Utils.toPacket(getPacketUpdate(), 0);
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setString("owner", owner);
 		if (battery != null) {
 			NBTTagCompound batteryNBT = new NBTTagCompound();
 			battery.writeToNBT(batteryNBT);
 			nbt.setTag("battery", batteryNBT);
+			return batteryNBT;
 		}
+		return nbt;
 	}
 
 	@Override
@@ -222,9 +216,9 @@ public abstract class TileBuildCraft extends TileEntity implements IEnergyHandle
 		return false;
 	}
 
-	public IChatComponent getDisplayName() {
+	public ITextComponent getDisplayName() {
 		if (this instanceof IInventory) {
-			return new ChatComponentTranslation(((IInventory) this).getName());
+			return new TextComponentTranslation(((IInventory) this).getName());
 		} else {
 			return null;
 		}

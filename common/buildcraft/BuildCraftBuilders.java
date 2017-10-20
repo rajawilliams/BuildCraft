@@ -29,22 +29,16 @@ import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -123,14 +117,12 @@ import buildcraft.builders.statements.ActionFiller;
 import buildcraft.builders.statements.BuildersActionProvider;
 import buildcraft.builders.urbanism.BlockUrbanist;
 import buildcraft.builders.urbanism.TileUrbanist;
-import buildcraft.builders.urbanism.UrbanistToolsIconProvider;
 import buildcraft.core.BlockBuildCraft;
 import buildcraft.core.DefaultProps;
 import buildcraft.core.InterModComms;
 import buildcraft.core.Version;
 import buildcraft.core.blueprints.RealBlueprintDeployer;
 import buildcraft.core.blueprints.SchematicRegistry;
-import buildcraft.core.builders.patterns.FillerPattern;
 import buildcraft.core.builders.patterns.FillerRegistry;
 import buildcraft.core.builders.patterns.PatternBox;
 import buildcraft.core.builders.patterns.PatternClear;
@@ -291,40 +283,40 @@ public class BuildCraftBuilders extends BuildCraftMod {
 		ISchematicRegistry schemes = BuilderAPI.schematicRegistry;
 		
 		// TODO Fix capitalization errors
-		schemes.registerSchematicBlock(Blocks.air, SchematicAir.class);
+		schemes.registerSchematicBlock(Blocks.AIR, SchematicAir.class);
 
-		schemes.registerSchematicBlock(Blocks.snow, SchematicIgnore.class);
-		schemes.registerSchematicBlock(Blocks.tallgrass, SchematicIgnore.class);
-		schemes.registerSchematicBlock(Blocks.double_plant, SchematicIgnore.class);
-		schemes.registerSchematicBlock(Blocks.ice, SchematicIgnore.class);
-		schemes.registerSchematicBlock(Blocks.piston_head, SchematicIgnore.class);
+		schemes.registerSchematicBlock(Blocks.SNOW, SchematicIgnore.class);
+		schemes.registerSchematicBlock(Blocks.TALLGRASS, SchematicIgnore.class);
+		schemes.registerSchematicBlock(Blocks.DOUBLE_PLANT, SchematicIgnore.class);
+		schemes.registerSchematicBlock(Blocks.ICE, SchematicIgnore.class);
+		schemes.registerSchematicBlock(Blocks.PISTON_HEAD, SchematicIgnore.class);
 
-		schemes.registerSchematicBlock(Blocks.dirt, SchematicDirt.class);
-		schemes.registerSchematicBlock(Blocks.grass, SchematicDirt.class);
+		schemes.registerSchematicBlock(Blocks.DIRT, SchematicDirt.class);
+		schemes.registerSchematicBlock(Blocks.GRASS, SchematicDirt.class);
 
-		schemes.registerSchematicBlock(Blocks.cactus, SchematicCactus.class);
+		schemes.registerSchematicBlock(Blocks.CACTUS, SchematicCactus.class);
 
-		schemes.registerSchematicBlock(Blocks.farmland, SchematicFarmland.class);
-		schemes.registerSchematicBlock(Blocks.wheat, SchematicSeeds.class, Items.wheat_seeds);
-		schemes.registerSchematicBlock(Blocks.pumpkin_stem, SchematicSeeds.class, Items.pumpkin_seeds);
-		schemes.registerSchematicBlock(Blocks.melon_stem, SchematicSeeds.class, Items.melon_seeds);
-		schemes.registerSchematicBlock(Blocks.nether_wart, SchematicSeeds.class, Items.nether_wart);
+		schemes.registerSchematicBlock(Blocks.FARMLAND, SchematicFarmland.class);
+		schemes.registerSchematicBlock(Blocks.WHEAT, SchematicSeeds.class, Items.WHEAT_SEEDS);
+		schemes.registerSchematicBlock(Blocks.PUMPKIN_STEM, SchematicSeeds.class, Items.PUMPKIN_SEEDS);
+		schemes.registerSchematicBlock(Blocks.MELON_STEM, SchematicSeeds.class, Items.MELON_SEEDS);
+		schemes.registerSchematicBlock(Blocks.NETHER_WART, SchematicSeeds.class, Items.NETHER_WART);
 
-		schemes.registerSchematicBlock(Blocks.torch, SchematicWallSide.class);
-		schemes.registerSchematicBlock(Blocks.redstone_torch, SchematicWallSide.class);
-		schemes.registerSchematicBlock(Blocks.unlit_redstone_torch, SchematicWallSide.class);
+		schemes.registerSchematicBlock(Blocks.TORCH, SchematicWallSide.class);
+		schemes.registerSchematicBlock(Blocks.REDSTONE_TORCH, SchematicWallSide.class);
+		schemes.registerSchematicBlock(Blocks.UNLIT_REDSTONE_TORCH, SchematicWallSide.class);
 
-		schemes.registerSchematicBlock(Blocks.tripwire_hook, SchematicTripWireHook.class);
+		schemes.registerSchematicBlock(Blocks.TRIPWIRE_HOOK, SchematicTripWireHook.class);
 
-		schemes.registerSchematicBlock(Blocks.skull, SchematicSkull.class);
+		schemes.registerSchematicBlock(Blocks.SKULL, SchematicSkull.class);
 
-		schemes.registerSchematicBlock(Blocks.ladder, SchematicRotate.class, BlockLadder.FACING);
-		schemes.registerSchematicBlock(Blocks.acacia_fence_gate, SchematicRotate.class, BlockFenceGate.FACING);
-		schemes.registerSchematicBlock(Blocks.birch_fence_gate, SchematicRotate.class, BlockFenceGate.FACING);
-		schemes.registerSchematicBlock(Blocks.dark_oak_fence_gate, SchematicRotate.class, BlockFenceGate.FACING);
-		schemes.registerSchematicBlock(Blocks.jungle_fence_gate, SchematicRotate.class, BlockFenceGate.FACING);
-		schemes.registerSchematicBlock(Blocks.oak_fence_gate, SchematicRotate.class, BlockFenceGate.FACING);
-		schemes.registerSchematicBlock(Blocks.spruce_fence_gate, SchematicRotate.class, BlockFenceGate.FACING);
+		schemes.registerSchematicBlock(Blocks.LADDER, SchematicRotate.class, BlockLadder.FACING);
+		schemes.registerSchematicBlock(Blocks.ACACIA_FENCE_GATE, SchematicRotate.class, BlockFenceGate.FACING);
+		schemes.registerSchematicBlock(Blocks.BIRCH_FENCE_GATE, SchematicRotate.class, BlockFenceGate.FACING);
+		schemes.registerSchematicBlock(Blocks.DARK_OAK_FENCE_GATE, SchematicRotate.class, BlockFenceGate.FACING);
+		schemes.registerSchematicBlock(Blocks.JUNGLE_FENCE_GATE, SchematicRotate.class, BlockFenceGate.FACING);
+		schemes.registerSchematicBlock(Blocks.OAK_FENCE_GATE, SchematicRotate.class, BlockFenceGate.FACING);
+		schemes.registerSchematicBlock(Blocks.SPRUCE_FENCE_GATE, SchematicRotate.class, BlockFenceGate.FACING);
 
 		// TODO!
 
@@ -336,118 +328,118 @@ public class BuildCraftBuilders extends BuildCraftMod {
 		schemes.registerSchematicBlock(Blocks.anvil, SchematicRotate.class, new int[]{0, 1, 2, 3}, true);
 
 		schemes.registerSchematicBlock(Blocks.vine, SchematicRotate.class, new int[]{1, 4, 8, 2}, false);*/
-		schemes.registerSchematicBlock(Blocks.trapdoor, SchematicRotate.class, BlockTrapDoor.FACING);
+		schemes.registerSchematicBlock(Blocks.TRAPDOOR, SchematicRotate.class, BlockTrapDoor.FACING);
 
-		schemes.registerSchematicBlock(Blocks.furnace, SchematicRotate.class, BlockFurnace.FACING);
-		schemes.registerSchematicBlock(Blocks.lit_furnace, SchematicRotate.class, BlockFurnace.FACING);
-		schemes.registerSchematicBlock(Blocks.chest, SchematicRotate.class, BlockChest.FACING);
-		schemes.registerSchematicBlock(Blocks.dispenser, SchematicRotate.class, BlockDispenser.FACING);
-		schemes.registerSchematicBlock(Blocks.dropper, SchematicRotate.class, BlockDropper.FACING);
+		schemes.registerSchematicBlock(Blocks.FURNACE, SchematicRotate.class, BlockFurnace.FACING);
+		schemes.registerSchematicBlock(Blocks.LIT_FURNACE, SchematicRotate.class, BlockFurnace.FACING);
+		schemes.registerSchematicBlock(Blocks.CHEST, SchematicRotate.class, BlockChest.FACING);
+		schemes.registerSchematicBlock(Blocks.DISPENSER, SchematicRotate.class, BlockDispenser.FACING);
+		schemes.registerSchematicBlock(Blocks.DROPPER, SchematicRotate.class, BlockDropper.FACING);
 
-		schemes.registerSchematicBlock(Blocks.ender_chest, SchematicEnderChest.class);
+		schemes.registerSchematicBlock(Blocks.ENDER_CHEST, SchematicEnderChest.class);
 
 
-		schemes.registerSchematicBlock(Blocks.wooden_button, SchematicLever.class);
-		schemes.registerSchematicBlock(Blocks.stone_button, SchematicLever.class);
-		schemes.registerSchematicBlock(Blocks.lever, SchematicLever.class);
+		schemes.registerSchematicBlock(Blocks.WOODEN_BUTTON, SchematicLever.class);
+		schemes.registerSchematicBlock(Blocks.STONE_BUTTON, SchematicLever.class);
+		schemes.registerSchematicBlock(Blocks.LEVER, SchematicLever.class);
 
-		schemes.registerSchematicBlock(Blocks.stone, SchematicStone.class);
-		schemes.registerSchematicBlock(Blocks.gold_ore, SchematicStone.class);
-		schemes.registerSchematicBlock(Blocks.iron_ore, SchematicStone.class);
-		schemes.registerSchematicBlock(Blocks.coal_ore, SchematicStone.class);
-		schemes.registerSchematicBlock(Blocks.lapis_ore, SchematicStone.class);
-		schemes.registerSchematicBlock(Blocks.diamond_ore, SchematicStone.class);
-		schemes.registerSchematicBlock(Blocks.redstone_ore, SchematicStone.class);
-		schemes.registerSchematicBlock(Blocks.lit_redstone_ore, SchematicStone.class);
-		schemes.registerSchematicBlock(Blocks.emerald_ore, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.STONE, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.GOLD_ORE, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.IRON_ORE, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.COAL_ORE, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.LAPIS_ORE, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.DIAMOND_ORE, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.REDSTONE_ORE, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.LIT_REDSTONE_ORE, SchematicStone.class);
+		schemes.registerSchematicBlock(Blocks.EMERALD_ORE, SchematicStone.class);
 
-		schemes.registerSchematicBlock(Blocks.gravel, SchematicGravel.class);
+		schemes.registerSchematicBlock(Blocks.GRAVEL, SchematicGravel.class);
 
-		schemes.registerSchematicBlock(Blocks.redstone_wire, SchematicRedstoneWire.class, new ItemStack(Items.redstone));
-		schemes.registerSchematicBlock(Blocks.cake, SchematicCustomStack.class, new ItemStack(Items.cake));
-		schemes.registerSchematicBlock(Blocks.glowstone, SchematicCustomStack.class, new ItemStack(Blocks.glowstone));
+		schemes.registerSchematicBlock(Blocks.REDSTONE_WIRE, SchematicRedstoneWire.class, new ItemStack(Items.REDSTONE));
+		schemes.registerSchematicBlock(Blocks.CAKE, SchematicCustomStack.class, new ItemStack(Items.CAKE));
+		schemes.registerSchematicBlock(Blocks.GLOWSTONE, SchematicCustomStack.class, new ItemStack(Blocks.GLOWSTONE));
 
-		schemes.registerSchematicBlock(Blocks.powered_repeater, SchematicRedstoneDiode.class, Items.repeater);
-		schemes.registerSchematicBlock(Blocks.unpowered_repeater, SchematicRedstoneDiode.class, Items.repeater);
-		schemes.registerSchematicBlock(Blocks.powered_comparator, SchematicRedstoneDiode.class, Items.comparator);
-		schemes.registerSchematicBlock(Blocks.unpowered_comparator, SchematicRedstoneDiode.class, Items.comparator);
+		schemes.registerSchematicBlock(Blocks.POWERED_REPEATER, SchematicRedstoneDiode.class, Items.REPEATER);
+		schemes.registerSchematicBlock(Blocks.UNPOWERED_REPEATER, SchematicRedstoneDiode.class, Items.REPEATER);
+		schemes.registerSchematicBlock(Blocks.POWERED_COMPARATOR, SchematicRedstoneDiode.class, Items.COMPARATOR);
+		schemes.registerSchematicBlock(Blocks.UNPOWERED_COMPARATOR, SchematicRedstoneDiode.class, Items.COMPARATOR);
 
-		schemes.registerSchematicBlock(Blocks.redstone_lamp, SchematicRedstoneLamp.class);
-		schemes.registerSchematicBlock(Blocks.lit_redstone_lamp, SchematicRedstoneLamp.class);
+		schemes.registerSchematicBlock(Blocks.REDSTONE_LAMP, SchematicRedstoneLamp.class);
+		schemes.registerSchematicBlock(Blocks.LIT_REDSTONE_LAMP, SchematicRedstoneLamp.class); // System.out.println("LITTTT BROOO");
 
-		schemes.registerSchematicBlock(Blocks.glass_pane, SchematicGlassPane.class);
-		schemes.registerSchematicBlock(Blocks.stained_glass_pane, SchematicGlassPane.class);
+		schemes.registerSchematicBlock(Blocks.GLASS_PANE, SchematicGlassPane.class);
+		schemes.registerSchematicBlock(Blocks.STAINED_GLASS_PANE, SchematicGlassPane.class);
 
-		schemes.registerSchematicBlock(Blocks.piston, SchematicPiston.class);
-		schemes.registerSchematicBlock(Blocks.piston_extension, SchematicPiston.class);
-		schemes.registerSchematicBlock(Blocks.sticky_piston, SchematicPiston.class);
+		schemes.registerSchematicBlock(Blocks.PISTON, SchematicPiston.class);
+		schemes.registerSchematicBlock(Blocks.PISTON_EXTENSION, SchematicPiston.class);
+		schemes.registerSchematicBlock(Blocks.STICKY_PISTON, SchematicPiston.class);
 
-		schemes.registerSchematicBlock(Blocks.lit_pumpkin, SchematicPumpkin.class);
+		schemes.registerSchematicBlock(Blocks.LIT_PUMPKIN, SchematicPumpkin.class);
 
-		schemes.registerSchematicBlock(Blocks.oak_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.stone_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.brick_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.stone_brick_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.nether_brick_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.sandstone_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.spruce_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.birch_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.jungle_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.quartz_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.acacia_stairs, SchematicStairs.class);
-		schemes.registerSchematicBlock(Blocks.dark_oak_stairs, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.OAK_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.STONE_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.BRICK_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.STONE_BRICK_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.NETHER_BRICK_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.SANDSTONE_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.SPRUCE_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.BIRCH_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.JUNGLE_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.QUARTZ_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.ACACIA_STAIRS, SchematicStairs.class);
+		schemes.registerSchematicBlock(Blocks.DARK_OAK_STAIRS, SchematicStairs.class);
 
-		schemes.registerSchematicBlock(Blocks.acacia_door, SchematicDoor.class, new ItemStack(Items.acacia_door));
-		schemes.registerSchematicBlock(Blocks.birch_door, SchematicDoor.class, new ItemStack(Items.birch_door));
-		schemes.registerSchematicBlock(Blocks.dark_oak_door, SchematicDoor.class, new ItemStack(Items.dark_oak_door));
-		schemes.registerSchematicBlock(Blocks.jungle_door, SchematicDoor.class, new ItemStack(Items.jungle_door));
-		schemes.registerSchematicBlock(Blocks.oak_door, SchematicDoor.class, new ItemStack(Items.oak_door));
-		schemes.registerSchematicBlock(Blocks.spruce_door, SchematicDoor.class, new ItemStack(Items.spruce_door));
-		schemes.registerSchematicBlock(Blocks.iron_door, SchematicDoor.class, new ItemStack(Items.iron_door));
+		schemes.registerSchematicBlock(Blocks.ACACIA_DOOR, SchematicDoor.class, new ItemStack(Items.ACACIA_DOOR));
+		schemes.registerSchematicBlock(Blocks.BIRCH_DOOR, SchematicDoor.class, new ItemStack(Items.BIRCH_DOOR));
+		schemes.registerSchematicBlock(Blocks.DARK_OAK_DOOR, SchematicDoor.class, new ItemStack(Items.DARK_OAK_DOOR));
+		schemes.registerSchematicBlock(Blocks.JUNGLE_DOOR, SchematicDoor.class, new ItemStack(Items.JUNGLE_DOOR));
+		schemes.registerSchematicBlock(Blocks.OAK_DOOR, SchematicDoor.class, new ItemStack(Items.OAK_DOOR));
+		schemes.registerSchematicBlock(Blocks.SPRUCE_DOOR, SchematicDoor.class, new ItemStack(Items.SPRUCE_DOOR));
+		schemes.registerSchematicBlock(Blocks.IRON_DOOR, SchematicDoor.class, new ItemStack(Items.IRON_DOOR));
 
-		schemes.registerSchematicBlock(Blocks.bed, SchematicBed.class);
+		schemes.registerSchematicBlock(Blocks.BED, SchematicBed.class);
 
-		schemes.registerSchematicBlock(Blocks.wall_sign, SchematicSign.class, true);
-		schemes.registerSchematicBlock(Blocks.standing_sign, SchematicSign.class, false);
+		schemes.registerSchematicBlock(Blocks.WALL_SIGN, SchematicSign.class, true);
+		schemes.registerSchematicBlock(Blocks.STANDING_SIGN, SchematicSign.class, false);
 
-		schemes.registerSchematicBlock(Blocks.portal, SchematicPortal.class);
+		schemes.registerSchematicBlock(Blocks.PORTAL, SchematicPortal.class);
 
-		schemes.registerSchematicBlock(Blocks.rail, SchematicRail.class);
-		schemes.registerSchematicBlock(Blocks.activator_rail, SchematicRail.class);
-		schemes.registerSchematicBlock(Blocks.detector_rail, SchematicRail.class);
-		schemes.registerSchematicBlock(Blocks.golden_rail, SchematicRail.class);
+		schemes.registerSchematicBlock(Blocks.RAIL, SchematicRail.class);
+		schemes.registerSchematicBlock(Blocks.ACTIVATOR_RAIL, SchematicRail.class);
+		schemes.registerSchematicBlock(Blocks.DETECTOR_RAIL, SchematicRail.class);
+		schemes.registerSchematicBlock(Blocks.GOLDEN_RAIL, SchematicRail.class);
 
-		schemes.registerSchematicBlock(Blocks.fire, SchematicFire.class);
+		schemes.registerSchematicBlock(Blocks.FIRE, SchematicFire.class);
 
-		schemes.registerSchematicBlock(Blocks.bedrock, SchematicBlockCreative.class);
+		schemes.registerSchematicBlock(Blocks.BEDROCK, SchematicBlockCreative.class);
 
-		schemes.registerSchematicBlock(Blocks.mob_spawner, SchematicTileCreative.class);
+		schemes.registerSchematicBlock(Blocks.MOB_SPAWNER, SchematicTileCreative.class);
 
-		schemes.registerSchematicBlock(Blocks.glass, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.stone_slab, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.double_stone_slab, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.wooden_slab, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.double_wooden_slab, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.stained_glass, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.acacia_fence, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.birch_fence, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.dark_oak_fence, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.jungle_fence, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.oak_fence, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.spruce_fence, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.daylight_detector, SchematicStandalone.class);
-		schemes.registerSchematicBlock(Blocks.iron_bars, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.GLASS, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.STONE_SLAB, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.DOUBLE_STONE_SLAB, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.WOODEN_SLAB, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.DOUBLE_WOODEN_SLAB, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.STAINED_GLASS, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.ACACIA_FENCE, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.BIRCH_FENCE, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.DARK_OAK_FENCE, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.JUNGLE_FENCE, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.OAK_FENCE, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.SPRUCE_FENCE, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.DAYLIGHT_DETECTOR, SchematicStandalone.class);
+		schemes.registerSchematicBlock(Blocks.IRON_BARS, SchematicStandalone.class);
 
 		// Standard entities
 
-		schemes.registerSchematicEntity(EntityMinecartEmpty.class, SchematicMinecart.class, Items.minecart);
-		schemes.registerSchematicEntity(EntityMinecartFurnace.class, SchematicMinecart.class, Items.furnace_minecart);
-		schemes.registerSchematicEntity(EntityMinecartTNT.class, SchematicMinecart.class, Items.tnt_minecart);
-		schemes.registerSchematicEntity(EntityMinecartChest.class, SchematicMinecart.class, Items.chest_minecart);
-		schemes.registerSchematicEntity(EntityMinecartHopper.class, SchematicMinecart.class, Items.hopper_minecart);
+		schemes.registerSchematicEntity(EntityMinecartEmpty.class, SchematicMinecart.class, Items.MINECART);
+		schemes.registerSchematicEntity(EntityMinecartFurnace.class, SchematicMinecart.class, Items.FURNACE_MINECART);
+		schemes.registerSchematicEntity(EntityMinecartTNT.class, SchematicMinecart.class, Items.TNT_MINECART);
+		schemes.registerSchematicEntity(EntityMinecartChest.class, SchematicMinecart.class, Items.CHEST_MINECART);
+		schemes.registerSchematicEntity(EntityMinecartHopper.class, SchematicMinecart.class, Items.HOPPER_MINECART);
 
-		schemes.registerSchematicEntity(EntityPainting.class, SchematicHanging.class, Items.painting);
-		schemes.registerSchematicEntity(EntityItemFrame.class, SchematicHanging.class, Items.item_frame);
+		schemes.registerSchematicEntity(EntityPainting.class, SchematicHanging.class, Items.PAINTING);
+		schemes.registerSchematicEntity(EntityItemFrame.class, SchematicHanging.class, Items.ITEM_FRAME);
 
 		// BuildCraft blocks
 
@@ -555,32 +547,32 @@ public class BuildCraftBuilders extends BuildCraftMod {
 
 	public static void loadRecipes() {
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(templateItem, 1), "ppp", "pip", "ppp", 'i',
-			"dyeBlack", 'p', Items.paper);
+			"dyeBlack", 'p', Items.PAPER);
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(blueprintItem, 1), "ppp", "pip", "ppp", 'i',
-			new ItemStack(Items.dye, 1, 4), 'p', Items.paper);
+			new ItemStack(Items.DYE, 1, 4), 'p', Items.PAPER);
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(markerBlock, 1), "l ", "r ", 'l',
-			new ItemStack(Items.dye, 1, 4), 'r', Blocks.redstone_torch);
+			new ItemStack(Items.DYE, 1, 4), 'r', Blocks.REDSTONE_TORCH);
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(pathMarkerBlock, 1), "l ", "r ", 'l',
-			"dyeGreen", 'r', Blocks.redstone_torch);
+			"dyeGreen", 'r', Blocks.REDSTONE_TORCH);
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(fillerBlock, 1), "btb", "ycy", "gCg", 'b',
 			"dyeBlack", 't', markerBlock, 'y', "dyeYellow",
-			'c', Blocks.crafting_table, 'g', "gearGold", 'C', Blocks.chest);
+			'c', Blocks.CRAFTING_TABLE, 'g', "gearGold", 'C', Blocks.CHEST);
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(builderBlock, 1), "btb", "ycy", "gCg", 'b',
 			"dyeBlack", 't', markerBlock, 'y', "dyeYellow",
-			'c', Blocks.crafting_table, 'g', "gearDiamond", 'C', Blocks.chest);
+			'c', Blocks.CRAFTING_TABLE, 'g', "gearDiamond", 'C', Blocks.CHEST);
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(architectBlock, 1), "btb", "ycy", "gCg", 'b',
 			"dyeBlack", 't', markerBlock, 'y', "dyeYellow",
-			'c', Blocks.crafting_table, 'g', "gearDiamond", 'C',
+			'c', Blocks.CRAFTING_TABLE, 'g', "gearDiamond", 'C',
 			new ItemStack(blueprintItem, 1));
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(libraryBlock, 1), "bbb", "bBb", "bbb", 'b',
-			new ItemStack(blueprintItem), 'B', Blocks.bookshelf);
+			new ItemStack(blueprintItem), 'B', Blocks.BOOKSHELF);
 	}
 
 	@Mod.EventHandler

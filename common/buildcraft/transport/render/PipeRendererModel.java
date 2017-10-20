@@ -3,9 +3,12 @@ package buildcraft.transport.render;
 import javax.vecmath.Vector3f;
 import tv.twitch.Core;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.google.common.base.Function;
 import com.google.common.primitives.Ints;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -13,13 +16,19 @@ import net.minecraft.client.renderer.block.model.BlockPartFace;
 import net.minecraft.client.renderer.block.model.BlockPartRotation;
 import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3i;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.client.model.ISmartItemModel;
+import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import buildcraft.BuildCraftTransport;
 import buildcraft.core.CoreConstants;
@@ -28,7 +37,7 @@ import buildcraft.transport.PipeIconProvider;
 import buildcraft.transport.PipeRenderState;
 import buildcraft.transport.TileGenericPipe;
 
-public class PipeRendererModel implements IBakedModel, ISmartBlockModel, ISmartItemModel {
+public class PipeRendererModel implements IModel, net.minecraft.client.renderer.block.model.IBakedModel {
 	private IExtendedBlockState state;
 	private ItemStack stack;
 	private boolean isItem;
@@ -62,11 +71,6 @@ public class PipeRendererModel implements IBakedModel, ISmartBlockModel, ISmartI
 				Float.floatToRawIntBits(texture.getInterpolatedV(v)),
 				0
 		};
-	}
-	
-	@Override
-	public List getFaceQuads(EnumFacing p_177551_1_) {
-		return Collections.emptyList();
 	}
 
 	private boolean[] isConnected = new boolean[6];
@@ -129,8 +133,8 @@ public class PipeRendererModel implements IBakedModel, ISmartBlockModel, ISmartI
 		return null;
 	}
 
-	private EnumFacing getSide(Vec3 a, Vec3 b, Vec3 c) {
-		int dir = a.yCoord == b.yCoord && b.yCoord == c.yCoord ? 0 : (a.xCoord == b.xCoord && b.xCoord == c.xCoord ? 2 : 4);
+	private EnumFacing getSide(Vec3i a, Vec3i b, Vec3i c) {
+		int dir = a.getY() == b.getY() && b.getY() == c.getY() ? 0 : (a.xCoord == b.xCoord && b.xCoord == c.xCoord ? 2 : 4);
 		if (dir == 0) {
 			dir += (c.yCoord >= 0.5) ? 1 : 0;
 		} else if (dir == 2) {
@@ -180,18 +184,18 @@ public class PipeRendererModel implements IBakedModel, ISmartBlockModel, ISmartI
 				// This renderer is so bad...
 				TextureAtlasSprite sprite = textures[f.ordinal()];
 				for (float[][] v : quadVertexes) {
-					Vec3 v1 = rotate(new Vec3(v[0][0] - .5, v[0][1] - .5, v[0][2] - .5), f).addVector(.5, .5, .5);
-					Vec3 v2 = rotate(new Vec3(v[1][0] - .5, v[1][1] - .5, v[1][2] - .5), f).addVector(.5, .5, .5);
-					Vec3 v3 = rotate(new Vec3(v[2][0] - .5, v[2][1] - .5, v[2][2] - .5), f).addVector(.5, .5, .5);
-					Vec3 v4 = rotate(new Vec3(v[3][0] - .5, v[3][1] - .5, v[3][2] - .5), f).addVector(.5, .5, .5);
+					Vec3i v1 = rotate(new Vec3i(v[0][0] - .5, v[0][1] - .5, v[0][2] - .5), f).addVector(.5, .5, .5);
+					Vec3i v2 = rotate(new Vec3i(v[1][0] - .5, v[1][1] - .5, v[1][2] - .5), f).addVector(.5, .5, .5);
+					Vec3i v3 = rotate(new Vec3i(v[2][0] - .5, v[2][1] - .5, v[2][2] - .5), f).addVector(.5, .5, .5);
+					Vec3i v4 = rotate(new Vec3i(v[3][0] - .5, v[3][1] - .5, v[3][2] - .5), f).addVector(.5, .5, .5);
 					EnumFacing side = getSide(v1, v2, v3);
 					int[] data = Ints.concat(
-							vertexToInts((float) v1.xCoord, (float) v1.yCoord, (float) v1.zCoord, -1, sprite, 4, 0),
-							vertexToInts((float) v2.xCoord, (float) v2.yCoord, (float) v2.zCoord, -1, sprite, 12, 0),
-							vertexToInts((float) v3.xCoord, (float) v3.yCoord, (float) v3.zCoord, -1, sprite, 12, 4),
-							vertexToInts((float) v4.xCoord, (float) v4.yCoord, (float) v4.zCoord, -1, sprite, 4, 4)
+							vertexToInts((float) v1.getX(), (float) v1.getY(), (float) v1.getZ(), -1, sprite, 4, 0),
+							vertexToInts((float) v2.getX(), (float) v2.getY(), (float) v2.getZ(), -1, sprite, 12, 0),
+							vertexToInts((float) v3.getX(), (float) v3.getY(), (float) v3.getZ(), -1, sprite, 12, 4),
+							vertexToInts((float) v4.getX(), (float) v4.getY(), (float) v4.getZ(), -1, sprite, 4, 4)
 					);
-					quads.add(new BakedQuad(data, -1, side));
+					quads.add(new BakedQuad(data, -1, side, sprite));
 					//quads.add(new BakedQuad(data, -1, side.getOpposite()));
 				}
 				if (isItem && f.ordinal() < 2) {
@@ -218,17 +222,47 @@ public class PipeRendererModel implements IBakedModel, ISmartBlockModel, ISmartI
 	}
 
 	@Override
-	public TextureAtlasSprite getTexture() {
-		return PipeIconProvider.TYPE.PipeFluidsCobblestone.getIcon();
-	}
-
-	@Override
 	public ItemCameraTransforms getItemCameraTransforms() {
 		return ItemCameraTransforms.DEFAULT;
 	}
 
 	@Override
-	public IBakedModel handleItemState(ItemStack stack) {
-		return new PipeRendererModel(stack);
+	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public TextureAtlasSprite getParticleTexture() {
+		return PipeIconProvider.TYPE.PipeFluidsCobblestone.getIcon();
+	}
+
+	@Override
+	public ItemOverrideList getOverrides() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<ResourceLocation> getDependencies() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<ResourceLocation> getTextures() {
+		return null;
+	}
+
+	@Override
+	public net.minecraft.client.renderer.block.model.IBakedModel bake(IModelState state, VertexFormat format,
+			Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IModelState getDefaultState() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

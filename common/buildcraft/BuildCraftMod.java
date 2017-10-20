@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Level;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
 import net.minecraftforge.fml.common.network.FMLOutboundHandler;
@@ -32,7 +32,7 @@ public class BuildCraftMod {
 			channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET)
 					.set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
 			channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
-					.set(new NetworkRegistry.TargetPoint(world.provider.getDimensionId(), x, y, z, maxDistance));
+					.set(new NetworkRegistry.TargetPoint(world.provider.getDimension(), x, y, z, maxDistance));
 			channels.get(Side.SERVER).writeOutbound(packet);
 		} catch (Throwable t) {
 			BCLog.logger.log(Level.WARN, "sendToPlayers crash", t);
@@ -56,7 +56,7 @@ public class BuildCraftMod {
 			channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET)
 					.set(FMLOutboundHandler.OutboundTarget.DIMENSION);
 			channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
-					.set(world.provider.getDimensionId());
+					.set(world.provider.getDimension());
 			channels.get(Side.SERVER).writeOutbound(packet);
 		} catch (Throwable t) {
 			BCLog.logger.log(Level.WARN, "sendToWorld crash", t);

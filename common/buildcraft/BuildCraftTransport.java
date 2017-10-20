@@ -16,15 +16,14 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -296,7 +295,7 @@ public class BuildCraftTransport extends BuildCraftMod {
 	public void preInit(FMLPreInitializationEvent evt) {
 		try {
 			Property durability = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "pipes.durability", DefaultProps.PIPES_DURABILITY);
-			durability.comment = "How long a pipe will take to break";
+			durability.setComment("How long a pipe will take to break");
 			pipeDurability = (float) durability.getDouble(DefaultProps.PIPES_DURABILITY);
 
 			Property baseFlowRate = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "pipes.fluids.baseFlowRate", DefaultProps.PIPES_FLUIDS_BASE_FLOW_RATE);
@@ -337,24 +336,24 @@ public class BuildCraftTransport extends BuildCraftMod {
 			GateExpansions.registerExpansion(GateExpansionRedstoneFader.INSTANCE);
 
 			Property groupItemsTriggerProp = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "pipes.groupItemsTrigger", 32);
-			groupItemsTriggerProp.comment = "when reaching this amount of objects in a pipes, items will be automatically grouped";
+			groupItemsTriggerProp.setComment("when reaching this amount of objects in a pipes, items will be automatically grouped");
 			groupItemsTrigger = groupItemsTriggerProp.getInt();
 
 			Property facadeBlacklistProp = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "facade.blacklist", new String[] {
-					Utils.getBlockName(Blocks.bedrock),
-					Utils.getBlockName(Blocks.command_block),
-					Utils.getBlockName(Blocks.end_portal_frame),
-					Utils.getBlockName(Blocks.grass),
-					Utils.getBlockName(Blocks.leaves),
-					Utils.getBlockName(Blocks.leaves2),
-					Utils.getBlockName(Blocks.lit_pumpkin),
-					Utils.getBlockName(Blocks.lit_redstone_lamp),
-					Utils.getBlockName(Blocks.mob_spawner),
-					Utils.getBlockName(Blocks.monster_egg),
-					Utils.getBlockName(Blocks.redstone_lamp),
-					Utils.getBlockName(Blocks.double_stone_slab),
-					Utils.getBlockName(Blocks.double_wooden_slab),
-					Utils.getBlockName(Blocks.sponge),
+					Utils.getBlockName(Blocks.BEDROCK),
+					Utils.getBlockName(Blocks.COMMAND_BLOCK),
+					Utils.getBlockName(Blocks.END_PORTAL_FRAME),
+					Utils.getBlockName(Blocks.GRASS),
+					Utils.getBlockName(Blocks.LEAVES),
+					Utils.getBlockName(Blocks.LEAVES2),
+					Utils.getBlockName(Blocks.LIT_PUMPKIN),
+					Utils.getBlockName(Blocks.LIT_REDSTONE_LAMP),
+					Utils.getBlockName(Blocks.MOB_SPAWNER),
+					Utils.getBlockName(Blocks.MONSTER_EGG),
+					Utils.getBlockName(Blocks.REDSTONE_LAMP),
+					Utils.getBlockName(Blocks.DOUBLE_STONE_SLAB),
+					Utils.getBlockName(Blocks.DOUBLE_WOODEN_SLAB),
+					Utils.getBlockName(Blocks.SPONGE),
 					JavaTools.surroundWithQuotes(Utils.getBlockName(BuildCraftBuilders.architectBlock)),
 					JavaTools.surroundWithQuotes(Utils.getBlockName(BuildCraftBuilders.builderBlock)),
 					JavaTools.surroundWithQuotes(Utils.getBlockName(BuildCraftBuilders.fillerBlock)),
@@ -367,7 +366,7 @@ public class BuildCraftTransport extends BuildCraftMod {
 					JavaTools.surroundWithQuotes(Utils.getBlockName(BuildCraftTransport.filteredBufferBlock)),
 			});
 
-			facadeBlacklistProp.comment = "Blocks listed here will not have facades created. The format is modid:blockname.\nFor mods with a | character, the value needs to be surrounded with quotes.";
+			facadeBlacklistProp.setComment("Blocks listed here will not have facades created. The format is modid:blockname.\nFor mods with a | character, the value needs to be surrounded with quotes.");
 			facadeBlacklist = facadeBlacklistProp.getStringList();
 
             Property facadeAsWhitelist = BuildCraftCore.mainConfiguration.get(Configuration.CATEGORY_GENERAL, "facade.treatBlacklistAsWhitelist", false);
@@ -382,22 +381,22 @@ public class BuildCraftTransport extends BuildCraftMod {
 
 			CoreProxy.proxy.registerBlock(genericPipeBlock.setUnlocalizedName("pipeBlock"), ItemBlock.class);
 
-			pipeItemsWood = buildPipe(PipeItemsWood.class, "Wooden Transport Pipe", CreativeTabBuildCraft.PIPES, "plankWood", Blocks.glass, "plankWood");
-			pipeItemsEmerald = buildPipe(PipeItemsEmerald.class, "Emerald Transport Pipe", CreativeTabBuildCraft.PIPES, "gemEmerald", Blocks.glass, "gemEmerald");
-			pipeItemsCobblestone = buildPipe(PipeItemsCobblestone.class, "Cobblestone Transport Pipe", CreativeTabBuildCraft.PIPES, "cobblestone", Blocks.glass, "cobblestone");
-			pipeItemsStone = buildPipe(PipeItemsStone.class, "Stone Transport Pipe", CreativeTabBuildCraft.PIPES, "stone", Blocks.glass, "stone");
-			pipeItemsQuartz = buildPipe(PipeItemsQuartz.class, "Quartz Transport Pipe", CreativeTabBuildCraft.PIPES, "blockQuartz", Blocks.glass, "blockQuartz");
-			pipeItemsIron = buildPipe(PipeItemsIron.class, "Iron Transport Pipe", CreativeTabBuildCraft.PIPES, "ingotIron", Blocks.glass, "ingotIron");
-			pipeItemsGold = buildPipe(PipeItemsGold.class, "Golden Transport Pipe", CreativeTabBuildCraft.PIPES, "ingotGold", Blocks.glass, "ingotGold");
-			pipeItemsDiamond = buildPipe(PipeItemsDiamond.class, "Diamond Transport Pipe", CreativeTabBuildCraft.PIPES, "gemDiamond", Blocks.glass, "gemDiamond");
-			pipeItemsObsidian = buildPipe(PipeItemsObsidian.class, "Obsidian Transport Pipe", CreativeTabBuildCraft.PIPES, Blocks.obsidian, Blocks.glass, Blocks.obsidian);
-			pipeItemsLapis = buildPipe(PipeItemsLapis.class, "Lapis Transport Pipe", CreativeTabBuildCraft.PIPES, "blockLapis", Blocks.glass, "blockLapis");
-			pipeItemsDaizuli = buildPipe(PipeItemsDaizuli.class, "Daizuli Transport Pipe", CreativeTabBuildCraft.PIPES, "blockLapis", Blocks.glass, "gemDiamond");
-			pipeItemsSandstone = buildPipe(PipeItemsSandstone.class, "Sandstone Transport Pipe", CreativeTabBuildCraft.PIPES, Blocks.sandstone, Blocks.glass, Blocks.sandstone);
-			pipeItemsVoid = buildPipe(PipeItemsVoid.class, "Void Transport Pipe", CreativeTabBuildCraft.PIPES, "dyeBlack", Blocks.glass, "dustRedstone");
-			pipeItemsEmzuli = buildPipe(PipeItemsEmzuli.class, "Emzuli Transport Pipe", CreativeTabBuildCraft.PIPES, "blockLapis", Blocks.glass, "gemEmerald");
-			pipeItemsStripes = buildPipe(PipeItemsStripes.class, "Stripes Transport Pipe", CreativeTabBuildCraft.PIPES, "gearGold", Blocks.glass, "gearGold");
-            pipeItemsClay = buildPipe(PipeItemsClay.class, "Clay Transport Pipe", CreativeTabBuildCraft.PIPES, Blocks.clay, Blocks.glass, Blocks.clay);
+			pipeItemsWood = buildPipe(PipeItemsWood.class, "Wooden Transport Pipe", CreativeTabBuildCraft.PIPES, "plankWood", Blocks.GLASS, "plankWood");
+			pipeItemsEmerald = buildPipe(PipeItemsEmerald.class, "Emerald Transport Pipe", CreativeTabBuildCraft.PIPES, "gemEmerald", Blocks.GLASS, "gemEmerald");
+			pipeItemsCobblestone = buildPipe(PipeItemsCobblestone.class, "Cobblestone Transport Pipe", CreativeTabBuildCraft.PIPES, "cobblestone", Blocks.GLASS, "cobblestone");
+			pipeItemsStone = buildPipe(PipeItemsStone.class, "Stone Transport Pipe", CreativeTabBuildCraft.PIPES, "stone", Blocks.GLASS, "stone");
+			pipeItemsQuartz = buildPipe(PipeItemsQuartz.class, "Quartz Transport Pipe", CreativeTabBuildCraft.PIPES, "blockQuartz", Blocks.GLASS, "blockQuartz");
+			pipeItemsIron = buildPipe(PipeItemsIron.class, "Iron Transport Pipe", CreativeTabBuildCraft.PIPES, "ingotIron", Blocks.GLASS, "ingotIron");
+			pipeItemsGold = buildPipe(PipeItemsGold.class, "Golden Transport Pipe", CreativeTabBuildCraft.PIPES, "ingotGold", Blocks.GLASS, "ingotGold");
+			pipeItemsDiamond = buildPipe(PipeItemsDiamond.class, "Diamond Transport Pipe", CreativeTabBuildCraft.PIPES, "gemDiamond", Blocks.GLASS, "gemDiamond");
+			pipeItemsObsidian = buildPipe(PipeItemsObsidian.class, "Obsidian Transport Pipe", CreativeTabBuildCraft.PIPES, Blocks.OBSIDIAN, Blocks.GLASS, Blocks.OBSIDIAN);
+			pipeItemsLapis = buildPipe(PipeItemsLapis.class, "Lapis Transport Pipe", CreativeTabBuildCraft.PIPES, "blockLapis", Blocks.GLASS, "blockLapis");
+			pipeItemsDaizuli = buildPipe(PipeItemsDaizuli.class, "Daizuli Transport Pipe", CreativeTabBuildCraft.PIPES, "blockLapis", Blocks.GLASS, "gemDiamond");
+			pipeItemsSandstone = buildPipe(PipeItemsSandstone.class, "Sandstone Transport Pipe", CreativeTabBuildCraft.PIPES, Blocks.SANDSTONE, Blocks.GLASS, Blocks.SANDSTONE);
+			pipeItemsVoid = buildPipe(PipeItemsVoid.class, "Void Transport Pipe", CreativeTabBuildCraft.PIPES, "dyeBlack", Blocks.GLASS, "dustRedstone");
+			pipeItemsEmzuli = buildPipe(PipeItemsEmzuli.class, "Emzuli Transport Pipe", CreativeTabBuildCraft.PIPES, "blockLapis", Blocks.GLASS, "gemEmerald");
+			pipeItemsStripes = buildPipe(PipeItemsStripes.class, "Stripes Transport Pipe", CreativeTabBuildCraft.PIPES, "gearGold", Blocks.GLASS, "gearGold");
+            pipeItemsClay = buildPipe(PipeItemsClay.class, "Clay Transport Pipe", CreativeTabBuildCraft.PIPES, Blocks.CLAY, Blocks.GLASS, Blocks.CLAY); // Since the HELL was this a thing?
 
 			pipeFluidsWood = buildPipe(PipeFluidsWood.class, "Wooden Waterproof Pipe", CreativeTabBuildCraft.PIPES, pipeWaterproof, pipeItemsWood);
 			pipeFluidsCobblestone = buildPipe(PipeFluidsCobblestone.class, "Cobblestone Waterproof Pipe", CreativeTabBuildCraft.PIPES, pipeWaterproof, pipeItemsCobblestone);
@@ -420,7 +419,7 @@ public class BuildCraftTransport extends BuildCraftMod {
 			pipePowerEmerald = buildPipe(PipePowerEmerald.class, "Emerald Kinesis Pipe", CreativeTabBuildCraft.PIPES, "dustRedstone", pipeItemsEmerald);
             pipePowerSandstone = buildPipe(PipePowerSandstone.class, "Sandstone Kinesis Pipe", CreativeTabBuildCraft.PIPES, "dustRedstone", pipeItemsSandstone);
 
-            pipeStructureCobblestone = buildPipe(PipeStructureCobblestone.class, "Cobblestone Structure Pipe", CreativeTabBuildCraft.PIPES, Blocks.gravel, pipeItemsCobblestone);
+            pipeStructureCobblestone = buildPipe(PipeStructureCobblestone.class, "Cobblestone Structure Pipe", CreativeTabBuildCraft.PIPES, Blocks.GRAVEL, pipeItemsCobblestone);
 
 			pipeWire = new ItemPipeWire();
 			CoreProxy.proxy.registerItem(pipeWire);
@@ -525,12 +524,12 @@ public class BuildCraftTransport extends BuildCraftMod {
 
 	@SubscribeEvent
 	public void registerModels(ModelBakeEvent event) {
-		for (Object o : Block.blockRegistry) {
+		for (Object o : Block.REGISTRY) {
 			if (o instanceof BlockGenericPipe) {
-				event.modelRegistry.putObject(new ModelResourceLocation(Utils.getBlockName((Block) o), null), new PipeRendererModel());
-				event.modelRegistry.putObject(new ModelResourceLocation(Utils.getBlockName((Block) o), "normal"), new PipeRendererModel());
+				event.getModelRegistry().putObject(new ModelResourceLocation(Utils.getBlockName((Block) o), null), new PipeRendererModel());
+				event.getModelRegistry().putObject(new ModelResourceLocation(Utils.getBlockName((Block) o), "normal"), new PipeRendererModel());
 				for (int i = 0; i < 16; i++) {
-					event.modelRegistry.putObject(new ModelResourceLocation(Utils.getBlockName((Block) o), "data=" + i), new PipeRendererModel());
+					event.getModelRegistry().putObject(new ModelResourceLocation(Utils.getBlockName((Block) o), "data=" + i), new PipeRendererModel());
 				}
 			}
 		}
@@ -538,8 +537,8 @@ public class BuildCraftTransport extends BuildCraftMod {
 
 	@SubscribeEvent
 	public void registerTextures(TextureStitchEvent.Pre event) {
-		pipeIconProvider.registerIcons(event.map);
-		wireIconProvider.registerIcons(event.map);
+		pipeIconProvider.registerIcons(event.getMap());
+		wireIconProvider.registerIcons(event.getMap());
 	}
 
 	@Mod.EventHandler
@@ -564,7 +563,7 @@ public class BuildCraftTransport extends BuildCraftMod {
 
 	public void loadRecipes() {
 		// Add base recipe for pipe waterproof.
-		GameRegistry.addShapelessRecipe(new ItemStack(pipeWaterproof, 1), new ItemStack(Items.dye, 1, 2));
+		GameRegistry.addShapelessRecipe(new ItemStack(pipeWaterproof, 1), new ItemStack(Items.DYE, 1, 2));
 
 		// Add pipe recipes
 		for (PipeRecipe pipe : pipeRecipes) {
@@ -579,8 +578,8 @@ public class BuildCraftTransport extends BuildCraftMod {
 		
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(filteredBufferBlock, 1),
 				"wdw", "wcw", "wpw", 'w', "plankWood", 'd',
-			BuildCraftTransport.pipeItemsDiamond, 'c', Blocks.chest, 'p',
-			Blocks.piston);
+			BuildCraftTransport.pipeItemsDiamond, 'c', Blocks.CHEST, 'p',
+			Blocks.PISTON);
 
 		//Facade turning helper
 		GameRegistry.addRecipe(facadeItem.new FacadeRecipe());
@@ -667,9 +666,9 @@ public class BuildCraftTransport extends BuildCraftMod {
 				ItemStack glass;
 				
 				if (i == 0) {
-					glass = new ItemStack(Blocks.glass);
+					glass = new ItemStack(Blocks.GLASS);
 				} else {
-					glass = new ItemStack(Blocks.stained_glass, 1, i - 1);
+					glass = new ItemStack(Blocks.STAINED_GLASS, 1, i - 1);
 				}
 				
 				recipe.result = new ItemStack(res, 8, i);

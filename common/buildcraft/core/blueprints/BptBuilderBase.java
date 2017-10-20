@@ -18,8 +18,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import buildcraft.BuildCraftBuilders;
@@ -161,7 +161,7 @@ public abstract class BptBuilderBase implements IAreaProvider {
 	}
 
 	public AxisAlignedBB getBoundingBox() {
-		return AxisAlignedBB.fromBounds(xMin(), yMin(), zMin(), xMax(), yMax(), zMax());
+		return new AxisAlignedBB(xMin(), yMin(), zMin(), xMax(), yMax(), zMax());
 	}
 
 	public void postProcessing(World world) {

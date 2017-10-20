@@ -15,10 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import buildcraft.api.blueprints.BuilderAPI;
 import buildcraft.api.boards.RedstoneBoardRegistry;
@@ -212,6 +210,7 @@ public class BuildCraftSilicon extends BuildCraftMod {
 		SiliconProxy.proxy.registerRenderers();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadRecipes() {
 
 		// TABLES
@@ -219,7 +218,7 @@ public class BuildCraftSilicon extends BuildCraftMod {
 				"ORR",
 				"DDR",
 				"ORR",
-				'O', Blocks.obsidian,
+				'O', Blocks.OBSIDIAN,
 				'R', "dustRedstone",
 				'D', "gemDiamond");
 
@@ -227,7 +226,7 @@ public class BuildCraftSilicon extends BuildCraftMod {
 				"ORO",
 				"ODO",
 				"OGO",
-				'O', Blocks.obsidian,
+				'O', Blocks.OBSIDIAN,
 				'R', "dustRedstone",
 				'D', "gemDiamond",
 				'G', "gearDiamond");
@@ -236,16 +235,16 @@ public class BuildCraftSilicon extends BuildCraftMod {
 				"OWO",
 				"OCO",
 				"ORO",
-				'O', Blocks.obsidian,
-				'W', Blocks.crafting_table,
-				'C', Blocks.chest,
+				'O', Blocks.OBSIDIAN,
+				'W', Blocks.CRAFTING_TABLE,
+				'C', Blocks.CHEST,
 				'R', new ItemStack(redstoneChipset, 1, 0));
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(assemblyTableBlock, 1, 2),
 				"ORO",
 				"OCO",
 				"OGO",
-				'O', Blocks.obsidian,
+				'O', Blocks.OBSIDIAN,
 				'R', "dustRedstone",
 				'C', new ItemStack(redstoneChipset, 1, 0),
 				'G', "gearDiamond");
@@ -254,7 +253,7 @@ public class BuildCraftSilicon extends BuildCraftMod {
 				"ORO",
 				"OCO",
 				"OGO",
-				'O', Blocks.obsidian,
+				'O', Blocks.OBSIDIAN,
 				'R', "dustRedstone",
 				'C', new ItemStack(redstoneChipset, 1, 0),
 				'G', "gearGold");
@@ -264,7 +263,7 @@ public class BuildCraftSilicon extends BuildCraftMod {
 				"IRI",
 				"GMG",
 				"IDI",
-				'M', Items.map,
+				'M', Items.MAP,
 				'R', "dustRedstone",
 				'G', "gearGold",
 				'D', "gearDiamond",
@@ -274,9 +273,9 @@ public class BuildCraftSilicon extends BuildCraftMod {
 				"IPI",
 				"GCG",
 				"IRI",
-				'C', Blocks.chest,
+				'C', Blocks.CHEST,
 				'R', "dustRedstone",
-				'P', Blocks.piston,
+				'P', Blocks.PISTON,
 				'G', "gearIron",
 				'I', "ingotIron");
 		
@@ -292,23 +291,23 @@ public class BuildCraftSilicon extends BuildCraftMod {
         BuildcraftRecipeRegistry.assemblyTable.addRecipe("buildcraft:emeraldChipset", 1200000,
                 Chipset.EMERALD.getStack(), "dustRedstone", "gemEmerald");
 		BuildcraftRecipeRegistry.assemblyTable.addRecipe("buildcraft:pulsatingChipset", 400000,
-				Chipset.PULSATING.getStack(2), "dustRedstone", Items.ender_pearl);
+				Chipset.PULSATING.getStack(2), "dustRedstone", Items.ENDER_PEARL);
 		BuildcraftRecipeRegistry.assemblyTable.addRecipe("buildcraft:quartzChipset", 600000, Chipset.QUARTZ.getStack(),
 				"dustRedstone", "gemQuartz");
 		BuildcraftRecipeRegistry.assemblyTable.addRecipe("buildcraft:compChipset", 600000, Chipset.COMP.getStack(),
-				"dustRedstone", Items.comparator);
+				"dustRedstone", Items.COMPARATOR);
 
 		// ROBOTS AND BOARDS
 		BuildcraftRecipeRegistry.assemblyTable.addRecipe("buildcraft:redstoneCrystal", 10000000, new ItemStack(
 				redstoneCrystal), new ItemStack(
-				Blocks.redstone_block));
+				Blocks.REDSTONE_BLOCK));
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(redstoneBoard),
 				"PPP",
 				"PRP",
 				"PPP",
 				'R', "dustRedstone",
-				'P', Items.paper);
+				'P', Items.PAPER);
 
 		CoreProxy.proxy.addCraftingRecipe(new ItemStack(robotItem),
 				"PPP",

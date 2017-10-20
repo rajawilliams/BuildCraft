@@ -13,15 +13,14 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S27PacketExplosion;
-import net.minecraft.util.BlockPos;
+import net.minecraft.network.play.server.SPacketExplosion;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -44,6 +43,9 @@ import buildcraft.BuildCraftFactory;
 import buildcraft.api.blueprints.BuilderAPI;
 import buildcraft.core.proxy.CoreProxy;
 
+// TODO Update all the methods with dirty old block system to the new IBlockState system
+
+@SuppressWarnings("deprecation")
 public final class BlockUtils {
 
 	/**
@@ -55,7 +57,7 @@ public final class BlockUtils {
 	public static List<ItemStack> getItemStackFromBlock(WorldServer world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 
-		if (state.getBlock().isAir(world, pos)) {
+		if (state.getBlock().isAir(state, world, pos)) {
 			return null;
 		}
 
@@ -86,7 +88,7 @@ public final class BlockUtils {
 			return false;
 		}
 
-		if (!world.isAirBlock(pos) && BuildCraftCore.dropBrokenBlocks && !world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+		if (!world.isAirBlock(pos) && BuildCraftCore.dropBrokenBlocks && !world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
 			List<ItemStack> items = getItemStackFromBlock(world, pos);
 
 			for (ItemStack item : items) {
@@ -113,7 +115,8 @@ public final class BlockUtils {
 	}
 
 	public static boolean isAnObstructingBlock(Block block, World world, BlockPos pos) {
-		if (block == null || block.isAir(world, pos)) {
+		IBlockState state = world.getBlockState(pos);
+		if (block == null || block.isAir(state, world, pos)) {
 			return false;
 		}
 		return true;
@@ -124,11 +127,12 @@ public final class BlockUtils {
 	}
 
 	public static boolean canChangeBlock(Block block, World world, BlockPos pos) {
-		if (block == null || block.isAir(world, pos)) {
+		IBlockState state = world.getBlockState(pos);
+		if (block == null || block.isAir(state, world, pos)) {
 			return true;
 		}
 
-		if (block.getBlockHardness(world, pos) < 0) {
+		if (block.getBlockHardness(state, world, pos) < 0) {
 			return false;
 		}
 
@@ -136,7 +140,7 @@ public final class BlockUtils {
 			return false;
 		}
 
-		if (block == Blocks.lava || block == Blocks.flowing_lava) {
+		if (block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) {
 			return false;
 		}
 
@@ -145,15 +149,16 @@ public final class BlockUtils {
 
 	public static boolean isUnbreakableBlock(World world, BlockPos pos) {
 		Block b = world.getBlockState(pos).getBlock();
-
-		return b != null && b.getBlockHardness(world, pos) < 0;
+		IBlockState state = world.getBlockState(pos);
+		return b != null && b.getBlockHardness(state, world, pos) < 0;
 	}
 
 	/**
 	 * Returns true if a block cannot be harvested without a tool.
 	 */
 	public static boolean isToughBlock(World world, BlockPos pos) {
-		return !world.getBlockState(pos).getBlock().getMaterial().isToolNotRequired();
+		IBlockState state = world.getBlockState(pos);
+		return !world.getBlockState(pos).getBlock().getMaterial(state).isToolNotRequired();
 	}
 
 	public static boolean isFullFluidBlock(World world, BlockPos pos) {
@@ -198,7 +203,6 @@ public final class BlockUtils {
 	/**
 	 * Create an explosion which only affects a single block.
 	 */
-	@SuppressWarnings("unchecked")
 	public static void explodeBlock(World world, BlockPos pos) {
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			return;
@@ -216,12 +220,13 @@ public final class BlockUtils {
 			}
 
 			if (player.getDistanceSq(pos) < 4096) {
-				((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S27PacketExplosion(pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, positions, null));
+				((EntityPlayerMP) player).connection.sendPacket(new SPacketExplosion(pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, positions, null));
 			}
 		}
 	}
 
 	public static int computeBlockBreakEnergy(World world, BlockPos pos) {
-		return (int) Math.floor(BuilderAPI.BREAK_ENERGY * BuildCraftFactory.miningMultiplier * ((world.getBlockState(pos).getBlock().getBlockHardness(world, pos) + 1) * 2));
+		IBlockState state = world.getBlockState(pos);
+		return (int) Math.floor(BuilderAPI.BREAK_ENERGY * BuildCraftFactory.miningMultiplier * ((world.getBlockState(pos).getBlock().getBlockHardness(state, world, pos) + 1) * 2));
 	}
 }

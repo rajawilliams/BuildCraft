@@ -24,9 +24,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -91,7 +91,7 @@ public class BptBuilderBlueprint extends BptBuilderBase {
 
 						if (slot == null) {
 							slot = new SchematicBlock();
-							slot.state = Blocks.air.getDefaultState();
+							slot.state = Blocks.AIR.getDefaultState();
 						}
 
 						if (!SchematicRegistry.INSTANCE.isAllowedForBuilding(slot.state)) {
